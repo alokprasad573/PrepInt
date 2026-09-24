@@ -1,8 +1,21 @@
 const express = require("express");
 const app = express();
 const chalk = require("chalk");
+const cors = require("cors");
+const path = require("path")
 const mongoose = require("mongoose");
 require('dotenv').config();
+
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    allowedHeaders: ["*"]
+  })
+)
+
+app.use(express.json())
+app.use("/uploads", express.static(path.join(__dirname, "uploads", {})))
 
 const altasConnect = async () => {
   try {
