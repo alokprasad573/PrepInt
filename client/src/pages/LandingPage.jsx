@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { APP_FEATURES } from "../utils/data";
 
@@ -7,13 +7,25 @@ import Login from "./Auth/Login";
 import SignUp from "./Auth/SignUp";
 import Modal from "../components/Modal";
 
+import { UserContext } from "../context/userContext";
+import ProfileInfoCard from "../components/cards/ProfileInfoCard";
+
 const LandingPage = () => {
   const navigate = useNavigate();
+
+  const { user } = useContext(UserContext);
 
   const [openAuthModal, setOpenAuthModal] = useState(false);
   const [currentPage, setCurrentPage] = useState("login");
 
-  const handleCTA = () => {};
+  const handleCTA = () => {
+    if (!user) {
+      setOpenAuthModal(true);
+    } else {
+      navigate("/dashboard");
+    }
+  };
+
   return (
     <>
       <div className="w-full min-h-full bg-[#FFFCEF]">
@@ -23,12 +35,16 @@ const LandingPage = () => {
           {/* Header */}
           <header className="flex justify-between items-center mb-16">
             <div className="text-xl text-black font-bold">PrepInt</div>
-            <button
-              className="bg-linear-to-r from-[#FF9324] to-[#e99a4b] text-sm font-semibold text-white px-7 py-2.5 rounded-full hover:bg-black hover:text-white border border-white transition-colors cursor-pointer"
-              onClick={() => setOpenAuthModal(true)}
-            >
-              Login / Sign Up
-            </button>
+            {user ? (
+              <ProfileInfoCard />
+            ) : (
+              <button
+                className="bg-linear-to-r from-[#FF9324] to-[#e99a4b] text-sm font-semibold text-white px-7 py-2.5 rounded-full hover:bg-black hover:text-white border border-white transition-colors cursor-pointer"
+                onClick={() => setOpenAuthModal(true)}
+              >
+                Login / Sign Up
+              </button>
+            )}
           </header>
 
           {/* Hero Content */}
@@ -133,9 +149,7 @@ const LandingPage = () => {
         hideHeader
       >
         <div>
-          {currentPage === "login" && (
-            <Login setCurrentPage={setCurrentPage} />
-          )}
+          {currentPage === "login" && <Login setCurrentPage={setCurrentPage} />}
 
           {currentPage === "signup" && (
             <SignUp setCurrentPage={setCurrentPage} />
