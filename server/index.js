@@ -6,6 +6,14 @@ const path = require("path")
 const mongoose = require("mongoose");
 require('dotenv').config();
 
+const { atlasConnect } = require("./config/db");
+const { protect } = require("./middlewares/auth.middleware");
+const authRoutes = require("./routes/auth.routes");
+const sessionRoutes = require("./routes/session.routes");
+const questionsRoutes = require("./routes/question.routes");
+const { generateInterviewQuestions, generateConceptExplanation} = require("./controllers/ai.controller")
+
+// Global Middlewares
 app.use(
   cors({
     origin: "*",
@@ -14,21 +22,9 @@ app.use(
   })
 )
 
-app.use(express.json())
-app.use("/uploads", express.static(path.join(__dirname, "uploads", {})))
+app.use(express.json());
 
-const altasConnect = async () => {
-  try {
-    await mongoose.connect(process.env.ATLAS_URI);
-    console.log("✅ Database Connected Successfully");
-    console.log(`Database Link :- ${chalk.blue(process.env.ATLAS_URI)}`);
-  } catch (error) {
-    console.error("❌ Database Connection Failed");
-    throw error;
-  }
-};
-
-altasConnect()
+atlasConnect()
   .then(() => {
     app.listen(process.env.PORT, () => {
       console.log(
@@ -41,6 +37,11 @@ altasConnect()
     process.exit(1);
   });
 
-app.get("/", (req, res) => {
-  res.status(200).json({ stattus: res.status, message: "Hello world" });
-});
+
+// Routes
+app.use("/api/auth", authRoutes);
+app.use("/api/sessions", sessionRoutes);
+app.use("/api/questions", questionsRoutes);
+
+app.get("/api/ai/generated-questions", protect, generateInterviewQuestions);
+app.get("/api/ai/generate-explanation", protect, generateConceptExplanation);
