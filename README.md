@@ -13,8 +13,8 @@
 [![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 [![Google Gemini](https://img.shields.io/badge/Google_Gemini-AI_1.5-8E75C2?style=for-the-badge&logo=google&logoColor=white)](https://deepmind.google/technologies/gemini/)
 [![AWS S3](https://img.shields.io/badge/AWS_S3-Storage-FF9900?style=for-the-badge&logo=amazon-s3&logoColor=white)](https://aws.amazon.com/s3/)
-[![Frontend CI](https://github.com/alokprasad573/AI-Powered-Interview-Preparation-Platform/actions/workflows/frontend-ci.yml/badge.svg)](https://github.com/alokprasad573/AI-Powered-Interview-Preparation-Platform/actions/workflows/frontend-ci.yml)
-[![Backend CI](https://github.com/alokprasad573/AI-Powered-Interview-Preparation-Platform/actions/workflows/backend-ci.yml/badge.svg)](https://github.com/alokprasad573/AI-Powered-Interview-Preparation-Platform/actions/workflows/backend-ci.yml)
+[![CI](https://github.com/alokprasad573/PrepInt/actions/workflows/ci.yml/badge.svg)](https://github.com/alokprasad573/PrepInt/actions/workflows/ci.yml)
+[![CD](https://github.com/alokprasad573/PrepInt/actions/workflows/cd.yml/badge.svg)](https://github.com/alokprasad573/PrepInt/actions/workflows/cd.yml)
 [![Vercel](https://img.shields.io/badge/Vercel-Deployment-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
 
 <br />
@@ -218,9 +218,8 @@ PrepInt/
 
 GitHub Actions is used for continuous integration, and Vercel handles deployment.
 
-- **Frontend CI Pipeline (`.github/workflows/frontend-ci.yml`):** Triggers on pushes and PRs touching `client/**` to run dependency installation, ESLint checks, and production build verification (`npm run build`) on Node 20.
-- **Backend CI Pipeline (`.github/workflows/backend-ci.yml`):** Triggers on pushes and PRs touching `server/**` to validate dependencies and verify server syntax integrity (`node --check index.js`).
-- **Continuous Deployment:** Seamlessly integrated with **Vercel** for instant pull request preview deployments and zero-downtime production rollouts.
+- **CI Pipeline (`.github/workflows/ci.yml`):** Triggers on pushes and PRs touching `client/**` or `server/**`, running frontend lint/build checks and backend syntax verification on Node 20.
+- **Continuous Deployment (`.github/workflows/cd.yml`):** Deploys frontend and backend projects to **Vercel** for pull request previews and production rollouts on pushes to `main`.
 
 ---
 

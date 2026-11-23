@@ -39,18 +39,24 @@ app.use(
 
 app.use(express.json());
 
-atlasConnect()
-  .then(() => {
-    app.listen(PORT, () => {
-      console.log(
-        `🚀 Server running at ${chalk.blue.underline(`http://localhost:${PORT}`)}`,
-      );
+if (!process.env.VERCEL) {
+  atlasConnect()
+    .then(() => {
+      app.listen(PORT, () => {
+        console.log(
+          `🚀 Server running at ${chalk.blue.underline(`http://localhost:${PORT}`)}`,
+        );
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      process.exit(1);
     });
-  })
-  .catch((err) => {
+} else {
+  atlasConnect().catch((err) => {
     console.log(err);
-    process.exit(1);
   });
+}
 
 
 // Routes
@@ -60,3 +66,5 @@ app.use("/api/questions", questionsRoutes);
 
 app.post("/api/ai/generated-questions", protect, generateInterviewQuestions);
 app.post("/api/ai/generate-explanation", protect, generateConceptExplanation);
+
+module.exports = app;
