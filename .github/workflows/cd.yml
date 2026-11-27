@@ -49,7 +49,7 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_CLIENT_PROJECT_ID: ${{ secrets.VERCEL_CLIENT_PROJECT_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_CLIENT_PROJECT_ID }}
         run: |
           vercel pull --yes --environment=${{ github.event_name == 'pull_request' && 'preview' || 'production' }} --token="$VERCEL_TOKEN"
           vercel build ${{ github.event_name == 'push' && '--prod' || '' }} --token="$VERCEL_TOKEN"
@@ -84,7 +84,7 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_SERVER_PROJECT_ID: ${{ secrets.VERCEL_SERVER_PROJECT_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_SERVER_PROJECT_ID }}
         run: |
           vercel pull --yes --environment=${{ github.event_name == 'pull_request' && 'preview' || 'production' }} --token="$VERCEL_TOKEN"
           vercel build ${{ github.event_name == 'push' && '--prod' || '' }} --token="$VERCEL_TOKEN"
