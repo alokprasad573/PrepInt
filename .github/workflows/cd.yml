@@ -1,23 +1,7 @@
 name: CD
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "client/**"
-      - "server/**"
-      - ".github/workflows/cd.yml"
-  pull_request:
-    types: [opened, synchronize, reopened]
-    paths:
-      - "client/**"
-      - "server/**"
-      - ".github/workflows/cd.yml"
-
-concurrency:
-  group: cd-${{ github.ref }}
-  cancel-in-progress: true
+  workflow_dispatch:
 
 jobs:
   deploy-frontend:
@@ -26,10 +10,6 @@ jobs:
     permissions:
       contents: read
       deployments: write
-
-    defaults:
-      run:
-        working-directory: client
 
     steps:
       - name: Checkout Repository
@@ -51,9 +31,9 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_CLIENT_PROJECT_ID }}
         run: |
-          vercel pull --yes --environment=${{ github.event_name == 'pull_request' && 'preview' || 'production' }} --token="$VERCEL_TOKEN"
-          vercel build ${{ github.event_name == 'push' && '--prod' || '' }} --token="$VERCEL_TOKEN"
-          vercel deploy --prebuilt ${{ github.event_name == 'push' && '--prod' || '' }} --token="$VERCEL_TOKEN"
+          vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+          vercel build --prod --token="$VERCEL_TOKEN"
+          vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"
 
   deploy-backend:
     name: Deploy Backend
@@ -61,10 +41,6 @@ jobs:
     permissions:
       contents: read
       deployments: write
-
-    defaults:
-      run:
-        working-directory: server
 
     steps:
       - name: Checkout Repository
@@ -86,6 +62,6 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_SERVER_PROJECT_ID }}
         run: |
-          vercel pull --yes --environment=${{ github.event_name == 'pull_request' && 'preview' || 'production' }} --token="$VERCEL_TOKEN"
-          vercel build ${{ github.event_name == 'push' && '--prod' || '' }} --token="$VERCEL_TOKEN"
-          vercel deploy --prebuilt ${{ github.event_name == 'push' && '--prod' || '' }} --token="$VERCEL_TOKEN"
+          vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+          vercel build --prod --token="$VERCEL_TOKEN"
+          vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"

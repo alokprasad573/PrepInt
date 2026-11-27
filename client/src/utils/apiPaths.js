@@ -1,7 +1,7 @@
 export const BASE_URL = "http://localhost:8080";
 
 export const HERO_IMAGE =
-  "https://prepint-s3-bucket.s3.ap-south-2.amazonaws.com/user_profile_images/1790503568224-ibp56g982pc.png";
+  "https://prepint-s3-bucket.s3.ap-south-2.amazonaws.com/hero_image/Screenshot+(42).png";
 
 export const API_PATHS = {
   AUTH: {
@@ -23,7 +23,7 @@ export const API_PATHS = {
     CREATE: "/api/sessions/create", // Create a new interview session with questions
     GET_ALL: "/api/sessions/my-sessions", // Get all user sessions
     GET_ONE_BY_ID: (id) => `/api/sessions/my-sessions/${id}`, // Get sessions details with questions
-    DELETE: (id) => `api/sessions/my-sessions/${id}/delete`, // Delete a session
+    DELETE: (id) => `/api/sessions/my-sessions/${id}/delete`, // Delete a session
   },
 
   QUESTIONS: {

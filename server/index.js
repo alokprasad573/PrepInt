@@ -14,10 +14,12 @@ const questionsRoutes = require("./routes/question.routes");
 const { generateInterviewQuestions, generateConceptExplanation} = require("./controllers/ai.controller")
 
 // Global Middlewares
+const normalizeOrigin = (url) => (url ? url.replace(/\/+$/, "") : "");
+
 const allowedOrigins = [
   "http://localhost:5173",
   "http://127.0.0.1:5173",
-  process.env.CLIENT_URL
+  normalizeOrigin(process.env.CLIENT_URL),
 ].filter(Boolean);
 
 const PORT = process.env.PORT || 8000
