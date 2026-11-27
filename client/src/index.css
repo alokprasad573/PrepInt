@@ -14,12 +14,19 @@
   html {
     font-family: var(--font-display);
     -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
   }
 
   body {
     background-color: #fafaf9;
     color: #0f172a;
     overflow-x: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
   }
 }
 
@@ -41,6 +48,15 @@
   background: transparent;
 }
 
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 @layer utilities {
   @keyframes text-shine {
     0% {
@@ -53,66 +69,28 @@
 
   .animate-text-shine {
     background-size: 200% auto;
-    animation: text-shine 4s ease-in-out infinite alternate;
+    animation: text-shine 5s ease-in-out infinite alternate;
   }
 
-  @keyframes float-slow {
-    0%,
-    100% {
-      transform: translateY(0px);
+  @media (prefers-reduced-motion: reduce) {
+    .animate-text-shine {
+      animation: none;
     }
-    50% {
-      transform: translateY(-8px);
-    }
-  }
-
-  .animate-float {
-    animation: float-slow 4s ease-in-out infinite;
-  }
-
-  @keyframes pulse-glow {
-    0%,
-    100% {
-      opacity: 0.35;
-      transform: scale(1);
-    }
-    50% {
-      opacity: 0.6;
-      transform: scale(1.08);
-    }
-  }
-
-  .animate-pulse-glow {
-    animation: pulse-glow 6s ease-in-out infinite;
   }
 }
 
 .input-box {
-  @apply w-full flex justify-between items-center gap-3 text-sm text-slate-900 bg-white rounded-xl px-4 py-3 mb-3 border border-stone-200 outline-none transition-all duration-200 focus-within:border-amber-500 focus-within:ring-2 focus-within:ring-amber-500/15;
+  @apply w-full flex justify-between items-center gap-3 text-sm text-slate-900 bg-white rounded-xl px-4 py-3 mb-3 border border-stone-200 outline-none transition-[border-color,box-shadow] duration-200 focus-within:border-amber-500 focus-within:ring-2 focus-within:ring-amber-500/15;
 }
 
 .btn-primary {
-  @apply w-full flex items-center justify-center gap-2.5 text-sm font-semibold text-white bg-slate-900 shadow-sm p-3 rounded-xl hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-600 active:scale-[0.99] transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed;
+  @apply w-full flex items-center justify-center gap-2.5 text-sm font-semibold text-white bg-slate-900 shadow-sm p-3 rounded-xl hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-600 active:scale-[0.99] transition-[background-color,box-shadow,transform] duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed;
 }
 
 .btn-small {
-  @apply flex items-center justify-center gap-2 bg-linear-to-r from-amber-500 to-orange-600 text-sm font-semibold text-white px-6 py-2.5 rounded-xl hover:from-amber-600 hover:to-orange-700 active:scale-[0.98] transition-all duration-150 cursor-pointer shadow-md shadow-amber-500/20;
+  @apply flex items-center justify-center gap-2 bg-linear-to-r from-amber-500 to-orange-600 text-sm font-semibold text-white px-6 py-2.5 rounded-xl hover:from-amber-600 hover:to-orange-700 active:scale-[0.98] transition-[background-color,box-shadow,transform] duration-150 cursor-pointer shadow-md shadow-amber-500/20;
 }
 
 .perspective-container {
   perspective: 1400px;
-}
-
-.tilt-showcase-card {
-  transform: rotateX(12deg) scale(0.97);
-  transform-origin: center top;
-  transition:
-    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@media (min-width: 768px) {
-  .tilt-showcase-card:hover {
-    transform: rotateX(0deg) scale(1);
-  }
 }

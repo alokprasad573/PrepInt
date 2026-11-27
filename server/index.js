@@ -39,6 +39,24 @@ app.use(
 
 app.use(express.json());
 
+// Request logger
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on("finish", () => {
+    const duration = Date.now() - start;
+    const statusColor =
+      res.statusCode >= 500
+        ? chalk.red
+        : res.statusCode >= 400
+          ? chalk.yellow
+          : chalk.green;
+    console.log(
+      `${chalk.gray(new Date().toLocaleTimeString())} ${chalk.cyan(req.method)} ${req.originalUrl} ${statusColor(res.statusCode)} ${chalk.gray(`${duration}ms`)}`,
+    );
+  });
+  next();
+});
+
 if (!process.env.VERCEL) {
   atlasConnect()
     .then(() => {
